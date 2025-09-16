@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "../styles/TodoApp.css";
-import FolderCard from "./FolderCard";
+import FolderCarousel from "./FolderCarousel";
 
-const uid = () => (crypto?.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
+const uid = () =>
+  crypto?.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
 
 export default function TodoApp() {
   const [folderName, setFolderName] = useState("");
-  const [folders, setFolders] = useState([]); 
-  
+  const [folders, setFolders] = useState([]);
+
   const addFolder = () => {
     const name = folderName.trim();
     if (!name) return;
@@ -15,14 +16,16 @@ export default function TodoApp() {
     setFolderName("");
   };
 
-
   const addTaskToFolder = (folderId, text) => {
     const value = text.trim();
     if (!value) return;
     setFolders((fs) =>
       fs.map((f) =>
         f.id === folderId
-          ? { ...f, tasks: [...f.tasks, { id: uid(), text: value, completed: false }] }
+          ? {
+              ...f,
+              tasks: [...f.tasks, { id: uid(), text: value, completed: false }],
+            }
           : f
       )
     );
@@ -31,7 +34,9 @@ export default function TodoApp() {
   const removeTaskFromFolder = (folderId, taskId) => {
     setFolders((fs) =>
       fs.map((f) =>
-        f.id === folderId ? { ...f, tasks: f.tasks.filter((t) => t.id !== taskId) } : f
+        f.id === folderId
+          ? { ...f, tasks: f.tasks.filter((t) => t.id !== taskId) }
+          : f
       )
     );
   };
@@ -58,7 +63,6 @@ export default function TodoApp() {
   return (
     <div className="todo-container">
       <h1>To-do list</h1>
-      
 
       <div className="add-folder">
         <input
@@ -70,18 +74,15 @@ export default function TodoApp() {
         <button onClick={addFolder}>Ajouter</button>
       </div>
 
-      <div className="folder-grid">
-        {folders.map((folder) => (
-          <FolderCard
-            key={folder.id}
-            folder={folder}
-            onAddTask={(text) => addTaskToFolder(folder.id, text)}
-            onRemoveTask={(taskId) => removeTaskFromFolder(folder.id, taskId)}
-            onToggleTask={(taskId) => toggleTaskInFolder(folder.id, taskId)}
-            onRemoveFolder={() => removeFolder(folder.id)}
-          />
-        ))}
-      </div>
+      {folders.length > 0 && (
+        <FolderCarousel
+          folders={folders}
+          onAddTask={addTaskToFolder}
+          onRemoveTask={removeTaskFromFolder}
+          onToggleTask={toggleTaskInFolder}
+          onRemoveFolder={removeFolder}
+        />
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 body{
   font-family: Arial, sans-serif;
-  background-color: #636da7;
+  background: linear-gradient(to right, #153677, #4f2758);
   margin: 0;
   padding: 0;
 }
@@ -17,6 +17,10 @@ button {
   border-radius:10px;;
   color: black;
   border-color: grey;
+  cursor: pointer;
+  background-color: rgb(245, 243, 248);
+  border: oklab(lightness a b);
+  border: ;
 }
 
 .add-folder {
@@ -31,6 +35,8 @@ button {
   padding: 10px 12px;
   border-radius: 10px;
   border: none;
+  background-color: white;
+  outline: none;
 }
 
 .folder-grid {
@@ -42,4 +48,7 @@ button {
 h1 {
   text-align: center;
   margin-bottom: 20px;
+  font-family: 'motserrat', sans-serif;
+  color: white;
+  font-size: 50px;
 }
