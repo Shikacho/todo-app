@@ -20,7 +20,6 @@ button {
   cursor: pointer;
   background-color: rgb(245, 243, 248);
   border: oklab(lightness a b);
-  border: ;
 }
 
 .add-folder {

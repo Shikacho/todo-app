@@ -1,3 +1,4 @@
+// src/components/TodoApp.jsx
 import { useState } from "react";
 import "../styles/TodoApp.css";
 import FolderCarousel from "./FolderCarousel";
@@ -9,12 +10,26 @@ export default function TodoApp() {
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
 
+  /* ---------------- Dossiers ---------------- */
+
   const addFolder = () => {
     const name = folderName.trim();
     if (!name) return;
     setFolders((fs) => [...fs, { id: uid(), name, tasks: [] }]);
     setFolderName("");
   };
+
+  const removeFolder = (folderId) => {
+    setFolders((fs) => fs.filter((f) => f.id !== folderId));
+  };
+
+  const renameFolder = (folderId, newName) => {
+    const name = newName.trim();
+    if (!name) return;
+    setFolders((fs) => fs.map((f) => (f.id === folderId ? { ...f, name } : f)));
+  };
+
+  /* ---------------- Tâches ---------------- */
 
   const addTaskToFolder = (folderId, text) => {
     const value = text.trim();
@@ -24,7 +39,16 @@ export default function TodoApp() {
         f.id === folderId
           ? {
               ...f,
-              tasks: [...f.tasks, { id: uid(), text: value, completed: false }],
+              tasks: [
+                ...f.tasks,
+                {
+                  id: uid(),
+                  text: value,
+                  // completed est désormais optionnel si tu ne l’utilises plus
+                  completed: false,
+                  status: "en_cours", // statut par défaut
+                },
+              ],
             }
           : f
       )
@@ -41,6 +65,7 @@ export default function TodoApp() {
     );
   };
 
+  // Si tu gardes encore le “completed”, on le laisse, sinon tu peux le supprimer
   const toggleTaskInFolder = (folderId, taskId) => {
     setFolders((fs) =>
       fs.map((f) =>
@@ -56,9 +81,22 @@ export default function TodoApp() {
     );
   };
 
-  const removeFolder = (folderId) => {
-    setFolders((fs) => fs.filter((f) => f.id !== folderId));
+  const changeTaskStatus = (folderId, taskId, status) => {
+    setFolders((fs) =>
+      fs.map((f) =>
+        f.id === folderId
+          ? {
+              ...f,
+              tasks: f.tasks.map((t) =>
+                t.id === taskId ? { ...t, status } : t
+              ),
+            }
+          : f
+      )
+    );
   };
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="todo-container">
@@ -81,6 +119,8 @@ export default function TodoApp() {
           onRemoveTask={removeTaskFromFolder}
           onToggleTask={toggleTaskInFolder}
           onRemoveFolder={removeFolder}
+          onRenameFolder={renameFolder}
+          onChangeStatus={changeTaskStatus}
         />
       )}
     </div>

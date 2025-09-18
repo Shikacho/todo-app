@@ -1,3 +1,4 @@
+// src/components/FolderCard.jsx
 import { useRef, useState } from "react";
 import "../styles/FolderCard.css";
 import TaskItem from "./TaskItem";
@@ -9,11 +10,11 @@ export default function FolderCard({
   onToggleTask,
   onRemoveFolder,
   onRenameFolder,
+  onChangeStatus, // ✅ (taskId, newS)
 }) {
   const [taskText, setTaskText] = useState("");
   const inputRef = useRef(null);
 
-  // --- Édition du titre ---
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState(folder.name);
 
@@ -21,24 +22,30 @@ export default function FolderCard({
     setNameDraft(folder.name);
     setEditing(true);
   };
-
   const cancelEdit = () => {
     setEditing(false);
     setNameDraft(folder.name);
   };
-
   const saveEdit = () => {
     const next = nameDraft.trim();
-    if (next && next !== folder.name) onRenameFolder(folder.id, next);
+    if (next && next !== folder.name) onRenameFolder?.(folder.id, next);
     setEditing(false);
   };
 
   const submit = (e) => {
     e?.preventDefault?.();
-    if (!taskText.trim()) return;
-    onAddTask(taskText);
+    const value = taskText.trim();
+    if (!value) return;
+    onAddTask?.(value);
     setTaskText("");
     inputRef.current?.focus();
+  };
+
+  // ✅ wrapper sécurisé
+  const handleChangeStatus = (taskId, newS) => {
+    if (typeof onChangeStatus === "function") {
+      onChangeStatus(taskId, newS);
+    }
   };
 
   return (
@@ -71,14 +78,13 @@ export default function FolderCard({
             <button
               className="folder-rename"
               onClick={startEdit}
-              aria-label="Renommer le dossier"
+              aria-label="Renommer"
               title="Renommer"
             >
               ✎
             </button>
           </>
         )}
-
         <button
           className="folder-delete"
           onClick={onRemoveFolder}
@@ -106,9 +112,10 @@ export default function FolderCard({
           <TaskItem
             key={t.id}
             text={t.text}
-            completed={t.completed}
-            onToggle={() => onToggleTask(t.id)}
+            status={t.status || "en_cours"}
+            onChangeStatus={(newS) => handleChangeStatus(t.id, newS)} // ✅ simple & sûr
             onRemove={() => onRemoveTask(t.id)}
+            // onToggle={() => onToggleTask?.(t.id)} // si tu en as besoin
           />
         ))}
       </div>
