@@ -3,9 +3,9 @@ import "../styles/TaskItem.css";
 
 export default function TaskItem({
   text,
-  status = "en_cours", // "en_cours" | "en_pause" | "fini"
-  onChangeStatus, // (newStatus) => void
-  onRemove, // () => void
+  status = "en_cours",
+  onChangeStatus,
+  onRemove,
 }) {
   const [draft, setDraft] = useState(status);
   useEffect(() => setDraft(status), [status]);
@@ -16,7 +16,6 @@ export default function TaskItem({
 
   return (
     <div className={`task-card status-${status}`}>
-      {/* accent optionnel (désactivé dans le CSS si tu veux) */}
       <div className="task-accent" aria-hidden />
       <div className="task-body">
         <p className="task-text">{text}</p>
@@ -29,7 +28,7 @@ export default function TaskItem({
           >
             <input
               type="radio"
-              name={`etat-${status}-${text}`} // nom unique par item
+              name={`etat-${status}-${text}`}
               value="en_cours"
               checked={draft === "en_cours"}
               onChange={() => setDraft("en_cours")}

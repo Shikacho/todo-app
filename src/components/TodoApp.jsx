@@ -1,4 +1,3 @@
-// src/components/TodoApp.jsx
 import { useState } from "react";
 import "../styles/TodoApp.css";
 import FolderCarousel from "./FolderCarousel";
@@ -9,8 +8,6 @@ const uid = () =>
 export default function TodoApp() {
   const [folderName, setFolderName] = useState("");
   const [folders, setFolders] = useState([]);
-
-  /* ---------------- Dossiers ---------------- */
 
   const addFolder = () => {
     const name = folderName.trim();
@@ -29,8 +26,6 @@ export default function TodoApp() {
     setFolders((fs) => fs.map((f) => (f.id === folderId ? { ...f, name } : f)));
   };
 
-  /* ---------------- Tâches ---------------- */
-
   const addTaskToFolder = (folderId, text) => {
     const value = text.trim();
     if (!value) return;
@@ -44,9 +39,8 @@ export default function TodoApp() {
                 {
                   id: uid(),
                   text: value,
-                  // completed est désormais optionnel si tu ne l’utilises plus
                   completed: false,
-                  status: "en_cours", // statut par défaut
+                  status: "en_cours",
                 },
               ],
             }
@@ -65,7 +59,6 @@ export default function TodoApp() {
     );
   };
 
-  // Si tu gardes encore le “completed”, on le laisse, sinon tu peux le supprimer
   const toggleTaskInFolder = (folderId, taskId) => {
     setFolders((fs) =>
       fs.map((f) =>
@@ -95,8 +88,6 @@ export default function TodoApp() {
       )
     );
   };
-
-  /* ---------------- UI ---------------- */
 
   return (
     <div className="todo-container">

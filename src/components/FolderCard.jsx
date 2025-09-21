@@ -1,4 +1,3 @@
-// src/components/FolderCard.jsx
 import { useRef, useState } from "react";
 import "../styles/FolderCard.css";
 import TaskItem from "./TaskItem";
@@ -10,7 +9,7 @@ export default function FolderCard({
   onToggleTask,
   onRemoveFolder,
   onRenameFolder,
-  onChangeStatus, // ✅ (taskId, newS)
+  onChangeStatus,
 }) {
   const [taskText, setTaskText] = useState("");
   const inputRef = useRef(null);
@@ -41,7 +40,6 @@ export default function FolderCard({
     inputRef.current?.focus();
   };
 
-  // ✅ wrapper sécurisé
   const handleChangeStatus = (taskId, newS) => {
     if (typeof onChangeStatus === "function") {
       onChangeStatus(taskId, newS);
@@ -113,9 +111,8 @@ export default function FolderCard({
             key={t.id}
             text={t.text}
             status={t.status || "en_cours"}
-            onChangeStatus={(newS) => handleChangeStatus(t.id, newS)} // ✅ simple & sûr
+            onChangeStatus={(newS) => handleChangeStatus(t.id, newS)}
             onRemove={() => onRemoveTask(t.id)}
-            // onToggle={() => onToggleTask?.(t.id)} // si tu en as besoin
           />
         ))}
       </div>

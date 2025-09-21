@@ -1,8 +1,7 @@
-/* src/styles/TaskItem.css */
 :root{
-  --c-doing:  #2196f3;   /* en_cours */
-  --c-paused: #ff9800;   /* en_pause */
-  --c-done:   #4caf50;   /* fini */
+  --c-doing:  #2196f3;  
+  --c-paused: #ff9800;  
+  --c-done:   #4caf50;   
 }
 
 .task-card {
@@ -11,7 +10,6 @@
   grid-template-rows: auto 1fr auto;
   background: rgba(255,255,255,0.75);
   backdrop-filter: blur(4px);
-  /* 🔽 Bordure neutre très fine au départ */
   border: 2px solid transparent;
   border-radius: 10px;
   padding: 10px 12px;
@@ -21,27 +19,26 @@
 
 .task-card:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.10); }
 
-/* Bordure selon l’état validé */
-.status-en_cours{ border-color: var(--c-doing); }
-.status-en_pause{ border-color: var(--c-paused); }
-.status-fini    { border-color: var(--c-done); }
+.task-card.status-en_cours { border-color: var(--c-doing); }
+.task-card.status-en_pause { border-color: var(--c-paused); }
+.task-card.status-fini     { border-color: var(--c-done);   }
 
-/* Accent latéral */
 .task-accent{
   position:absolute; left:0; top:0; bottom:0; width:6px; border-radius:6px 0 0 6px; background:#ddd;
 }
+
 .status-en_cours .task-accent{ background: var(--c-doing); }
 .status-en_pause .task-accent{ background: var(--c-paused); }
 .status-fini     .task-accent{ background: var(--c-done); }
 
 .task-body{ margin-left:8px; }
+
 .task-text{ margin:0; font-size:14px; line-height:1.35; color:#222; word-break:break-word; }
 
-/* Footer */
 .task-footer{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
 
-/* Radios stylés */
 .state-group{ display:flex; flex-wrap:wrap; gap:6px; }
+
 .state-chip{
   display:inline-flex; align-items:center; gap:6px;
   border:1px solid rgba(0,0,0,0.12); border-radius:999px;
@@ -53,12 +50,13 @@
 .state-chip.is-active:has(input[value="en_pause"]){ border-color: var(--c-paused); background:#fff3e0; }
 .state-chip.is-active:has(input[value="fini"])    { border-color: var(--c-done);   background:#e8f5e9; }
 
-/* Actions */
 .footer-actions{ display:flex; gap:8px; justify-content:flex-end; }
+
 .btn{
   border:1px solid rgba(0,0,0,0.12); background:#fff; border-radius:8px;
   padding:6px 10px; font-size:12px; cursor:pointer; transition:background 120ms ease, transform 80ms ease;
 }
+
 .btn:hover{ background:#f7f7f7; }
 .btn:active{ transform: translateY(1px); }
 .btn.validate{ border-color:#9fa8da; background:#eef2ff; }
@@ -66,5 +64,4 @@
 .btn.danger{ border-color:#ef9a9a; background:#ffebee; }
 .btn.danger:hover{ background:#ffe3e6; }
 
-/* Optionnel: style texte si terminé */
 .status-fini .task-text{ text-decoration: line-through; opacity:0.8; }

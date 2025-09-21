@@ -10,6 +10,8 @@ export default function FolderCarousel({
   onRemoveTask,
   onToggleTask,
   onRemoveFolder,
+  onRenameFolder,
+  onChangeStatus,
 }) {
   const stripRef = useRef(null);
   const [cardW, setCardW] = useState(300);
@@ -55,8 +57,7 @@ export default function FolderCarousel({
   const scrollToIndex = (i, smooth = true) => {
     const el = stripRef.current;
     if (!el) return;
-    const left = i * step;
-    el.scrollTo({ left, behavior: smooth ? "smooth" : "instant" });
+    el.scrollTo({ left: i * step, behavior: smooth ? "smooth" : "instant" });
   };
 
   const prev = () => {
@@ -97,6 +98,10 @@ export default function FolderCarousel({
               onRemoveTask={(taskId) => onRemoveTask(folder.id, taskId)}
               onToggleTask={(taskId) => onToggleTask(folder.id, taskId)}
               onRemoveFolder={() => onRemoveFolder(folder.id)}
+              onRenameFolder={(id, name) => onRenameFolder?.(folder.id, name)} // ✅
+              onChangeStatus={(taskId, newS) =>
+                onChangeStatus?.(folder.id, taskId, newS)
+              } // ✅
             />
           </div>
         ))}
