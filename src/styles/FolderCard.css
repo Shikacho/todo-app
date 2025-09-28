@@ -14,7 +14,6 @@
   min-width: 0;
   max-width: none;
   margin: 0;
-
 }
 
 .folder-header {
@@ -34,14 +33,32 @@
   white-space: normal;
   text-overflow: unset;
 }
+
 .folder-delete {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 18px;
-  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.folder-delete svg {
+  fill: #333;
+  transition: fill 0.2s ease;
+}
+
+.folder-delete:hover {
+  background: #ffebee;
+  transform: scale(1.1);
+}
+
+.folder-delete:hover svg {
+  fill: #d32f2f;
+}
 .task-add {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -89,8 +106,27 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  padding: 4px;
   margin-left: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.folder-rename svg {
+  fill: #333;
+  transition: fill 0.2s ease;
+}
+
+.folder-rename:hover {
+  background: #e3f2fd;
+  transform: scale(1.1);
+}
+
+.folder-rename:hover svg {
+  fill: #1976d2; 
 }
 
 .edit-folder {

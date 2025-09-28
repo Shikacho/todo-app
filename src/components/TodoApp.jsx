@@ -93,15 +93,21 @@ export default function TodoApp() {
     <div className="todo-container">
       <h1>To-do list</h1>
 
-      <div className="add-folder">
+      <form
+        className="add-folder"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addFolder();
+        }}
+      >
         <input
           type="text"
           value={folderName}
           onChange={(e) => setFolderName(e.target.value)}
           placeholder="Nom du dossier…"
         />
-        <button onClick={addFolder}>Ajouter</button>
-      </div>
+        <button type="submit">Ajouter</button>
+      </form>
 
       {folders.length > 0 && (
         <FolderCarousel
