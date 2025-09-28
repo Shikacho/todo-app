@@ -2,8 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import FolderCard from "./FolderCard";
 import "../styles/FolderCarousel.css";
 
-const VISIBLE = 3;
-
 export default function FolderCarousel({
   folders,
   onAddTask,
@@ -14,25 +12,33 @@ export default function FolderCarousel({
   onChangeStatus,
 }) {
   const stripRef = useRef(null);
+
   const [cardW, setCardW] = useState(300);
   const [gap, setGap] = useState(24);
+  const [visible, setVisible] = useState(3);
   const [start, setStart] = useState(0);
 
-  const maxStart = Math.max(0, folders.length - VISIBLE);
+  const step = cardW + gap;
+  const maxStart = Math.max(0, folders.length - visible);
   const showPrev = start > 0;
   const showNext = start < maxStart;
-
-  const step = cardW + gap;
 
   const measure = () => {
     const el = stripRef.current;
     if (!el) return;
+
     const cs = getComputedStyle(el);
     const g = parseFloat(cs.getPropertyValue("--gap")) || 24;
     setGap(g);
 
     const viewport = el.clientWidth;
-    const cw = Math.floor((viewport - g * (VISIBLE - 1)) / VISIBLE);
+
+    let nextVisible = 3;
+    if (viewport < 560) nextVisible = 1;
+    else if (viewport < 900) nextVisible = 2;
+    setVisible(nextVisible);
+
+    const cw = Math.floor((viewport - g * (nextVisible - 1)) / nextVisible);
     setCardW(cw);
   };
 
@@ -46,13 +52,12 @@ export default function FolderCarousel({
       window.removeEventListener("resize", measure);
     };
   }, []);
-
   useEffect(() => {
-    const clipped = Math.min(start, Math.max(0, folders.length - VISIBLE));
+    const clipped = Math.min(start, Math.max(0, folders.length - visible));
     if (clipped !== start) setStart(clipped);
     const el = stripRef.current;
     if (el) el.scrollTo({ left: clipped * step, behavior: "instant" });
-  }, [folders.length, cardW, gap]);
+  }, [folders.length, visible, cardW, gap, start, step]);
 
   const scrollToIndex = (i, smooth = true) => {
     const el = stripRef.current;
@@ -98,10 +103,10 @@ export default function FolderCarousel({
               onRemoveTask={(taskId) => onRemoveTask(folder.id, taskId)}
               onToggleTask={(taskId) => onToggleTask(folder.id, taskId)}
               onRemoveFolder={() => onRemoveFolder(folder.id)}
-              onRenameFolder={(id, name) => onRenameFolder?.(folder.id, name)} // ✅
+              onRenameFolder={(id, name) => onRenameFolder?.(folder.id, name)}
               onChangeStatus={(taskId, newS) =>
                 onChangeStatus?.(folder.id, taskId, newS)
-              } // ✅
+              }
             />
           </div>
         ))}

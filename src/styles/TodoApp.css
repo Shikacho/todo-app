@@ -1,32 +1,56 @@
-body{
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #153677, #4f2758);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --container-max: 1200px;
+  --container-pad: clamp(16px, 4vw, 56px);
+}
+
+body {
   margin: 0;
-  padding: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #153677, #4f2758);
+  background-attachment: fixed;
+  color: #111;
 }
 
 .todo-container {
-  max-width: 1100px;
+  max-width: var(--container-max);
   margin: 40px auto;
-  padding: 0 400px;
+  padding-inline: var(--container-pad);
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+h1 {
+  text-align: center;
+  margin: 0 0 20px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: white;
+  font-size: clamp(28px, 4vw, 50px);
+  line-height: 1.1;
+}
+
 button {
-  border-radius:10px;;
-  color: black;
-  border-color: grey;
+  border-radius: 10px;
+  color: #111;
+  border: 1px solid #bbb;
   cursor: pointer;
-  background-color: rgb(245, 243, 248);
-  border: oklab(lightness a b);
+  background: rgb(245, 243, 248);
+  padding: 10px 12px;
 }
 
 .add-folder {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
-  width: 50px;
+  margin: 0 auto 20px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .add-folder input {
@@ -36,6 +60,12 @@ button {
   border: none;
   background-color: white;
   outline: none;
+  min-width: 0;
+}
+
+.add-folder button {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .folder-grid {
@@ -44,10 +74,27 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-family: 'motserrat', sans-serif;
-  color: white;
-  font-size: 50px;
+@media (max-width: 900px) {
+  .todo-container {
+    margin: 28px auto;
+  }
+  .folder-grid {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .todo-container {
+    margin: 20px auto;
+  }
+  .add-folder {
+    gap: 6px;
+  }
+  .add-folder input {
+    padding: 9px 10px;
+  }
+  button {
+    padding: 9px 10px;
+  }
 }
